@@ -15,9 +15,12 @@
  */
 package org.springframework.samples.petclinic.customers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.samples.petclinic.customers.model.OwnerRepository;
+import org.springframework.samples.petclinic.customers.model.PetRepository;
 
 /**
  * @author Maciej Szarlinski
@@ -26,7 +29,13 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 public class CustomersServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CustomersServiceApplication.class, args);
-	}
+    @Autowired
+    private OwnerRepository ownerRepository;
+
+    @Autowired
+    private PetRepository petRepository;
+
+    public static void main(String[] args) {
+        SpringApplication.run(CustomersServiceApplication.class, args);
+    }
 }

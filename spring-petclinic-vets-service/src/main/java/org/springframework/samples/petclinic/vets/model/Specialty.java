@@ -15,26 +15,22 @@
  */
 package org.springframework.samples.petclinic.vets.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * Models a {@link Vet Vet's} specialty (for example, dentistry).
  *
  * @author Juergen Hoeller
  */
-@Entity
-@Table(name = "specialties")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Specialty {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
     private String name;
 
     public Integer getId() {

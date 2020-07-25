@@ -15,7 +15,9 @@
  */
 package org.springframework.samples.petclinic.vets.model;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.microsoft.azure.spring.data.cosmosdb.repository.ReactiveCosmosRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository class for <code>Vet</code> domain objects All method names are compliant with Spring Data naming
@@ -27,5 +29,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Michael Isvy
  * @author Maciej Szarlinski
  */
-public interface VetRepository extends JpaRepository<Vet, Integer> {
+@Repository
+@RepositoryRestResource(collectionResourceRel = "vet", path = "vet")
+public interface VetRepository extends ReactiveCosmosRepository<Vet, Integer> {
 }

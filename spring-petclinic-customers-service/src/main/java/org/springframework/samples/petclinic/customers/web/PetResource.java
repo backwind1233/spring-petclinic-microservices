@@ -19,11 +19,12 @@ import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.samples.petclinic.customers.model.*;
+import org.springframework.samples.petclinic.customers.model.Owner;
+import org.springframework.samples.petclinic.customers.model.OwnerRepository;
+import org.springframework.samples.petclinic.customers.model.Pet;
+import org.springframework.samples.petclinic.customers.model.PetRepository;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Juergen Hoeller
@@ -41,22 +42,22 @@ class PetResource {
     private final OwnerRepository ownerRepository;
 
 
-    @GetMapping("/petTypes")
-    public List<PetType> getPetTypes() {
-        return petRepository.findPetTypes();
-    }
+//    @GetMapping("/petTypes")
+//    public List<PetType> getPetTypes() {
+//        return petRepository.findPetTypes();
+//    }
 
     @PostMapping("/owners/{ownerId}/pets")
     @ResponseStatus(HttpStatus.CREATED)
-    public Pet processCreationForm(
+    public Mono<Pet> processCreationForm(
         @RequestBody PetRequest petRequest,
         @PathVariable("ownerId") int ownerId) {
 
         final Pet pet = new Pet();
-        final Optional<Owner> optionalOwner = ownerRepository.findById(ownerId);
-        Owner owner = optionalOwner.orElseThrow(() -> new ResourceNotFoundException("Owner "+ownerId+" not found"));
-        owner.addPet(pet);
-
+        final Mono<Owner> optionalOwner = ownerRepository.findById(ownerId);
+        optionalOwner.blockOptional().ifPresent(owner -> {
+            owner.addPet(pet);
+        });
         return save(pet, petRequest);
     }
 
@@ -64,17 +65,18 @@ class PetResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void processUpdateForm(@RequestBody PetRequest petRequest) {
         int petId = petRequest.getId();
-        Pet pet = findPetById(petId);
+        Mono<Pet> petOptional = findPetById(petId);
+        Pet pet = petOptional.block();
         save(pet, petRequest);
     }
 
-    private Pet save(final Pet pet, final PetRequest petRequest) {
+    private Mono<Pet> save(final Pet pet, final PetRequest petRequest) {
 
         pet.setName(petRequest.getName());
         pet.setBirthDate(petRequest.getBirthDate());
 
-        petRepository.findPetTypeById(petRequest.getTypeId())
-            .ifPresent(pet::setType);
+//        petRepository.findPetTypeById(petRequest.getTypeId())
+//            .ifPresent(pet::setType);
 
         log.info("Saving pet {}", pet);
         return petRepository.save(pet);
@@ -86,12 +88,13 @@ class PetResource {
     }
 
 
-    private Pet findPetById(int petId) {
-        Optional<Pet> pet = petRepository.findById(petId);
-        if (!pet.isPresent()) {
-            throw new ResourceNotFoundException("Pet "+petId+" not found");
+    private Mono<Pet> findPetById(int petId) {
+        Mono<Pet> optionalPet = petRepository.findById(petId);
+
+        if (!optionalPet.blockOptional().isPresent()) {
+            throw new ResourceNotFoundException("Pet " + petId + " not found");
         }
-        return pet.get();
+        return optionalPet;
     }
 
 }

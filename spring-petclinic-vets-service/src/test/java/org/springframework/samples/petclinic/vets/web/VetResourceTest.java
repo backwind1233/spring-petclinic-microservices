@@ -17,18 +17,25 @@ package org.springframework.samples.petclinic.vets.web;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.vets.model.Vet;
 import org.springframework.samples.petclinic.vets.model.VetRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import reactor.core.publisher.Flux;
 
-import static java.util.Arrays.asList;
-import static org.mockito.BDDMockito.given;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,8 +43,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author Maciej Szarlinski
  */
+@RunWith(SpringJUnit4ClassRunner.class)
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(VetResource.class)
+@AutoConfigureMockMvc
+@SpringBootTest
 @ActiveProfiles("test")
 class VetResourceTest {
 
@@ -49,14 +58,15 @@ class VetResourceTest {
 
     @Test
     void shouldGetAListOfVets() throws Exception {
+        List<Vet> list = Arrays.asList(Vet.vet().id(1).build(), Vet.vet().id(2).build()
+        );
 
-        Vet vet = new Vet();
-        vet.setId(1);
+        when(vetRepository.findAll()).thenReturn(Flux.fromIterable(list));
 
-        given(vetRepository.findAll()).willReturn(asList(vet));
-
-        mvc.perform(get("/vets").accept(MediaType.APPLICATION_JSON))
+        MvcResult mvcresult = mvc.perform(get("/vets"))
             .andExpect(status().isOk())
+            .andReturn();
+        mvc.perform(asyncDispatch(mvcresult))
             .andExpect(jsonPath("$[0].id").value(1));
     }
 }

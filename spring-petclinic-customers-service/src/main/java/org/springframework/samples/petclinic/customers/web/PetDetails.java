@@ -16,13 +16,11 @@
 package org.springframework.samples.petclinic.customers.web;
 
 import lombok.Data;
-
-import java.util.Date;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.customers.model.Pet;
-import org.springframework.samples.petclinic.customers.model.PetType;
+import reactor.core.publisher.Mono;
 
+import java.util.Date;
 /**
  * @author mszarlinski@bravurasolutions.com on 2016-12-05.
  */
@@ -38,13 +36,15 @@ class PetDetails {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
 
-    private PetType type;
+    private String type;
 
-    PetDetails(Pet pet) {
-        this.id = pet.getId();
-        this.name = pet.getName();
-        this.owner = pet.getOwner().getFirstName() + " " + pet.getOwner().getLastName();
-        this.birthDate = pet.getBirthDate();
-        this.type = pet.getType();
+    PetDetails(Mono<Pet> petInfo) {
+        petInfo.blockOptional().ifPresent(pet -> {
+            this.id = pet.getId();
+            this.name = pet.getName();
+            this.owner = pet.getOwner().getFirstName() + " " + pet.getOwner().getLastName();
+            this.birthDate = pet.getBirthDate();
+            this.type = pet.getType();
+        });
     }
 }

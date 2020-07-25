@@ -15,7 +15,9 @@
  */
 package org.springframework.samples.petclinic.customers.model;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.microsoft.azure.spring.data.cosmosdb.repository.ReactiveCosmosRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository class for <code>Owner</code> domain objects All method names are compliant with Spring Data naming
@@ -27,4 +29,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Michael Isvy
  * @author Maciej Szarlinski
  */
-public interface OwnerRepository extends JpaRepository<Owner, Integer> { }
+@Repository
+@RepositoryRestResource(collectionResourceRel = "owner", path = "owner")
+public interface OwnerRepository extends ReactiveCosmosRepository<Owner, Integer> {
+}

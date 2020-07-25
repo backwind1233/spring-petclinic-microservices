@@ -16,19 +16,16 @@
 package org.springframework.samples.petclinic.visits.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
+import com.microsoft.azure.spring.data.cosmosdb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.validation.constraints.Size;
+import java.util.Date;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -36,36 +33,37 @@ import lombok.NoArgsConstructor;
  * @author Ken Krebs
  * @author Maciej Szarlinski
  */
-@Entity
-@Table(name = "visits")
+
+@Document(collection = "visits")
 @Builder(builderMethodName = "visit")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Visit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private int petId;
+
     @Builder.Default
-    @Column(name = "visit_date")
-    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date date = new Date();
+    private Date visit_date = new Date();
 
     @Size(max = 8192)
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "pet_id")
-    private int petId;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
     }
 
     public Date getDate() {
-        return date;
+        return visit_date;
     }
 
     public String getDescription() {
