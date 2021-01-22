@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.visits.web;
 
+import com.azure.cosmos.implementation.guava25.collect.Lists;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -24,10 +25,10 @@ import org.springframework.samples.petclinic.visits.model.Visit;
 import org.springframework.samples.petclinic.visits.model.VisitRepository;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Juergen Hoeller
@@ -46,7 +47,7 @@ class VisitResource {
 
     @PostMapping("owners/*/pets/{petId}/visits")
     @ResponseStatus(HttpStatus.CREATED)
-    Mono<Visit> create(
+    Visit create(
         @Valid @RequestBody Visit visit,
         @PathVariable("petId") int petId) {
 
@@ -56,14 +57,14 @@ class VisitResource {
     }
 
     @GetMapping("owners/*/pets/{petId}/visits")
-    Flux<Visit> visits(@PathVariable("petId") int petId) {
-        return visitRepository.findByPetId(petId);
+    Optional<Visit> visits(@PathVariable("petId") int petId) {
+        return  visitRepository.findById(petId);
     }
 
     @GetMapping("pets/visits")
     Visits visitsMultiGet(@RequestParam("petId") List<Integer> petIds) {
-        final Flux<Visit> byPetIdIn = visitRepository.findByPetIdIn(petIds);
-        return new Visits(byPetIdIn.collectList().block());
+        Iterable<Visit> visitIterable = visitRepository.findAllById(petIds);
+        return new Visits(Lists.newArrayList(visitIterable));
     }
 
     @Value

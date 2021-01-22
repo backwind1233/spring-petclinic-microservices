@@ -26,6 +26,8 @@ import org.springframework.samples.petclinic.customers.model.PetRepository;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 /**
  * @author Juergen Hoeller
  * @author Ken Krebs
@@ -49,13 +51,14 @@ class PetResource {
 
     @PostMapping("/owners/{ownerId}/pets")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Pet> processCreationForm(
+    public Pet processCreationForm(
         @RequestBody PetRequest petRequest,
         @PathVariable("ownerId") int ownerId) {
 
         final Pet pet = new Pet();
-        final Mono<Owner> optionalOwner = ownerRepository.findById(ownerId);
-        optionalOwner.blockOptional().ifPresent(owner -> {
+        Optional<Owner> optionalOwner = ownerRepository.findById(ownerId);
+
+        optionalOwner.ifPresent(owner -> {
             owner.addPet(pet);
         });
         return save(pet, petRequest);
@@ -65,12 +68,13 @@ class PetResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void processUpdateForm(@RequestBody PetRequest petRequest) {
         int petId = petRequest.getId();
-        Mono<Pet> petOptional = findPetById(petId);
-        Pet pet = petOptional.block();
-        save(pet, petRequest);
+        Optional<Pet> petOptional = findPetById(petId);
+        petOptional.ifPresent(pet -> {
+            save(pet, petRequest);
+        });
     }
 
-    private Mono<Pet> save(final Pet pet, final PetRequest petRequest) {
+    private Pet save(final Pet pet, final PetRequest petRequest) {
 
         pet.setName(petRequest.getName());
         pet.setBirthDate(petRequest.getBirthDate());
@@ -88,10 +92,10 @@ class PetResource {
     }
 
 
-    private Mono<Pet> findPetById(int petId) {
-        Mono<Pet> optionalPet = petRepository.findById(petId);
+    private Optional<Pet> findPetById(int petId) {
+        Optional<Pet> optionalPet = petRepository.findById(petId);
 
-        if (!optionalPet.blockOptional().isPresent()) {
+        if (!optionalPet.isPresent()) {
             throw new ResourceNotFoundException("Pet " + petId + " not found");
         }
         return optionalPet;

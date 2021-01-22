@@ -1,9 +1,13 @@
 spring:
-  cloud:
-    config:
-      uri: http://localhost:8888
-  application:
-    name: api-gateway
+ cloud:
+   config:
+     uri: http://localhost:8888
+ application:
+   name: api-gateway
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
 ---
 spring:
   profiles: docker

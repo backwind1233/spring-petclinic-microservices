@@ -15,7 +15,7 @@
  */
 package org.springframework.samples.petclinic.vets.model;
 
-import com.microsoft.azure.spring.data.cosmosdb.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -27,7 +27,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.xml.bind.annotation.XmlElement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Simple JavaBean domain object representing a veterinarian.
@@ -39,7 +43,7 @@ import java.util.*;
  * @author Maciej Szarlinski
  */
 
-@Document(collection = "vets")
+@Container(containerName = "vets")
 @Builder(builderMethodName = "vet")
 @AllArgsConstructor
 @NoArgsConstructor

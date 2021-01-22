@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.vets.model.Vet;
 import org.springframework.samples.petclinic.vets.model.VetRepository;
 import org.springframework.test.context.ActiveProfiles;
@@ -34,6 +35,8 @@ import reactor.core.publisher.Flux;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -58,15 +61,13 @@ class VetResourceTest {
 
     @Test
     void shouldGetAListOfVets() throws Exception {
-        List<Vet> list = Arrays.asList(Vet.vet().id(1).build(), Vet.vet().id(2).build()
+        List<Vet> vet = Arrays.asList(Vet.vet().id(1).build(), Vet.vet().id(2).build()
         );
 
-        when(vetRepository.findAll()).thenReturn(Flux.fromIterable(list));
+        given(vetRepository.findAll()).willReturn(vet);
 
-        MvcResult mvcresult = mvc.perform(get("/vets"))
+        mvc.perform(get("/vets").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andReturn();
-        mvc.perform(asyncDispatch(mvcresult))
             .andExpect(jsonPath("$[0].id").value(1));
     }
 }

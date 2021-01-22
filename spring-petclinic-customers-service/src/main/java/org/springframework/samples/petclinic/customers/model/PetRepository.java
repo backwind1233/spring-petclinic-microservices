@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 package org.springframework.samples.petclinic.customers.model;
-
-import com.microsoft.azure.spring.data.cosmosdb.repository.ReactiveCosmosRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -30,8 +28,7 @@ import org.springframework.stereotype.Repository;
  * @author Maciej Szarlinski
  */
 @Repository
-@RepositoryRestResource(collectionResourceRel = "pet", path = "pet")
-public interface PetRepository extends ReactiveCosmosRepository<Pet, Integer> {
+public interface PetRepository extends CosmosRepository<Pet, Integer> {
 
 //    /**
 //     * Retrieve all {@link PetType}s from the data store.

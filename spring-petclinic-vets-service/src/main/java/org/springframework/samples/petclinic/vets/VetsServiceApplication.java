@@ -32,7 +32,7 @@ import org.springframework.samples.petclinic.vets.system.VetsProperties;
 public class VetsServiceApplication {
 
     @Autowired
-    private VetRepository repository;
+    private VetRepository vetRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(VetsServiceApplication.class, args);

@@ -15,11 +15,9 @@
  */
 package org.springframework.samples.petclinic.customers.model;
 
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.microsoft.azure.spring.data.cosmosdb.core.mapping.Document;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.core.style.ToStringCreator;
 
 import java.util.Date;
@@ -32,7 +30,7 @@ import java.util.Date;
  * @author Sam Brannen
  * @author Maciej Szarlinski
  */
-@Document(collection = "pets")
+@Container(containerName = "pets")
 @Builder(builderMethodName = "pet")
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.vets;
 
-import com.google.common.collect.Lists;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +45,6 @@ public class PopulateSeedData {
         }});
         final Vet vet6 = new Vet(6, "James", "Carter", null);
 
-        Flux<Vet> temp = this.repository.saveAll(Lists.newArrayList(vet1, vet2, vet3, vet4, vet5, vet6));
-        if (temp != null) {
-            temp.collectList().block();
-        }
+        this.repository.saveAll(Lists.newArrayList(vet1, vet2, vet3, vet4, vet5, vet6));
     }
 }

@@ -21,6 +21,8 @@ import org.springframework.samples.petclinic.customers.model.Pet;
 import reactor.core.publisher.Mono;
 
 import java.util.Date;
+import java.util.Optional;
+
 /**
  * @author mszarlinski@bravurasolutions.com on 2016-12-05.
  */
@@ -38,8 +40,8 @@ class PetDetails {
 
     private String type;
 
-    PetDetails(Mono<Pet> petInfo) {
-        petInfo.blockOptional().ifPresent(pet -> {
+    PetDetails(Optional<Pet> petInfo) {
+        petInfo.ifPresent(pet -> {
             this.id = pet.getId();
             this.name = pet.getName();
             this.owner = pet.getOwner().getFirstName() + " " + pet.getOwner().getLastName();

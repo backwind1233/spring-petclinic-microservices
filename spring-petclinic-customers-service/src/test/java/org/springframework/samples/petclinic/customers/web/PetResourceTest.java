@@ -18,6 +18,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -46,7 +49,7 @@ class PetResourceTest {
 
         Pet pet = setupPet();
 
-        when(petRepository.findById(2)).thenReturn(Mono.just(pet));
+        given(petRepository.findById(2)).willReturn(Optional.of(pet));
 
 
         mvc.perform(get("/owners/2/pets/2").accept(MediaType.APPLICATION_JSON))

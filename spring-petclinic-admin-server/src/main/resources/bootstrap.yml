@@ -10,3 +10,11 @@ spring:
   cloud:
     config:
       uri: http://config-server:8888
+---
+spring:
+  profiles: local
+  cloud:
+    config:
+      uri: http://config-server:8888
+  server:
+    port: 8081

@@ -11,8 +11,8 @@
     <parent>
         <groupId>org.springframework.samples</groupId>
         <artifactId>spring-petclinic-microservices</artifactId>
-        <version>2.2.1</version>
-    </parent>
+         <version>2.3.6</version>
+   </parent>
 
     <properties>
         <docker.image.exposed.port>8888</docker.image.exposed.port>

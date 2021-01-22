@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.customers;
 
-import com.google.common.collect.Lists;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import javax.annotation.PostConstruct;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 
 
@@ -29,7 +31,6 @@ public class PopulateSeedData {
     private PetRepository petRepository;
 
 
-    @SneakyThrows
     @PostConstruct
     public void populateSeedData() {
 
@@ -68,27 +69,29 @@ public class PopulateSeedData {
             add(13);
         }});
 
-        final Pet pet1 = new Pet(1, "Leo", new SimpleDateFormat("yyyy-dd-mm").parse("2000-09-07"), "cat", owner1);
-        final Pet pet2 = new Pet(2, "Basil", new SimpleDateFormat("yyyy-dd-mm").parse("2002-08-06"), "hamster", owner2);
-        final Pet pet3 = new Pet(3, "Rosy", new SimpleDateFormat("yyyy-dd-mm").parse("2001-04-17"), "dog", owner3);
-        final Pet pet4 = new Pet(4, "Jewel", new SimpleDateFormat("yyyy-dd-mm").parse("2000-03-07"), "dog", owner3);
-        final Pet pet5 = new Pet(5, "Iggy", new SimpleDateFormat("yyyy-dd-mm").parse("2000-11-30"), "lizard", owner4);
-        final Pet pet6 = new Pet(6, "George", new SimpleDateFormat("yyyy-dd-mm").parse("2000-01-20"), "snake", owner5);
-        final Pet pet7 = new Pet(7, "Samantha", new SimpleDateFormat("yyyy-dd-mm").parse("1995-09-04"), "cat", owner6);
-        final Pet pet8 = new Pet(8, "Max", new SimpleDateFormat("yyyy-dd-mm").parse("1995-09-04"), "cat", owner6);
-        final Pet pet9 = new Pet(9, "Lucky", new SimpleDateFormat("yyyy-dd-mm").parse("1999-08-06"), "bird", owner7);
-        final Pet pet10 = new Pet(10, "Mulligan", new SimpleDateFormat("yyyy-dd-mm").parse("1997-02-24"), "dog", owner8);
-        final Pet pet11 = new Pet(11, "Freddy", new SimpleDateFormat("yyyy-dd-mm").parse("2000-03-09"), "bird", owner9);
-        final Pet pet12 = new Pet(12, "Lucky", new SimpleDateFormat("yyyy-dd-mm").parse("2000-06-24"), "dog", owner10);
-        final Pet pet13 = new Pet(13, "Sly", new SimpleDateFormat("yyyy-dd-mm").parse("2002-06-08"), "cat", owner10);
+        final Pet pet1 = new Pet(1, "Leo", parseDate("2000-09-07"), "cat", owner1);
+        final Pet pet2 = new Pet(2, "Basil", parseDate("2002-08-06"), "hamster", owner2);
+        final Pet pet3 = new Pet(3, "Rosy", parseDate("2001-04-17"), "dog", owner3);
+        final Pet pet4 = new Pet(4, "Jewel", parseDate("2000-03-07"), "dog", owner3);
+        final Pet pet5 = new Pet(5, "Iggy", parseDate("2000-11-30"), "lizard", owner4);
+        final Pet pet6 = new Pet(6, "George", parseDate("2000-01-20"), "snake", owner5);
+        final Pet pet7 = new Pet(7, "Samantha", parseDate("1995-09-04"), "cat", owner6);
+        final Pet pet8 = new Pet(8, "Max", parseDate("1995-09-04"), "cat", owner6);
+        final Pet pet9 = new Pet(9, "Lucky", parseDate("1999-08-06"), "bird", owner7);
+        final Pet pet10 = new Pet(10, "Mulligan", parseDate("1997-02-24"), "dog", owner8);
+        final Pet pet11 = new Pet(11, "Freddy", parseDate("2000-03-09"), "bird", owner9);
+        final Pet pet12 = new Pet(12, "Lucky", parseDate("2000-06-24"), "dog", owner10);
+        final Pet pet13 = new Pet(13, "Sly", parseDate("2002-06-08"), "cat", owner10);
 
-        Flux<Owner> tempOwner = this.ownerRepository.saveAll(Lists.newArrayList(owner1, owner2, owner3, owner4, owner5, owner6, owner7, owner8, owner9, owner10));
-        if (tempOwner != null) {
-            tempOwner.collectList().block();
-        }
-        Flux<Pet> tempPet = this.petRepository.saveAll(Lists.newArrayList(pet1, pet2, pet3, pet4, pet5, pet6, pet7, pet8, pet9, pet10, pet11, pet12, pet13));
-        if (tempPet != null) {
-            tempPet.collectList().block();
+        this.ownerRepository.saveAll(Lists.newArrayList(owner1, owner2, owner3, owner4, owner5, owner6, owner7, owner8, owner9, owner10));
+        this.petRepository.saveAll(Lists.newArrayList(pet1, pet2, pet3, pet4, pet5, pet6, pet7, pet8, pet9, pet10, pet11, pet12, pet13));
+    }
+
+    public static Date parseDate(String date) {
+        try {
+            return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (ParseException e) {
+            return null;
         }
     }
 }

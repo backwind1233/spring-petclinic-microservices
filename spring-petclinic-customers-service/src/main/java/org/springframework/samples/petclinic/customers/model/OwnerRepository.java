@@ -15,8 +15,7 @@
  */
 package org.springframework.samples.petclinic.customers.model;
 
-import com.microsoft.azure.spring.data.cosmosdb.repository.ReactiveCosmosRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -30,6 +29,5 @@ import org.springframework.stereotype.Repository;
  * @author Maciej Szarlinski
  */
 @Repository
-@RepositoryRestResource(collectionResourceRel = "owner", path = "owner")
-public interface OwnerRepository extends ReactiveCosmosRepository<Owner, Integer> {
+public interface OwnerRepository extends CosmosRepository<Owner, Integer> {
 }

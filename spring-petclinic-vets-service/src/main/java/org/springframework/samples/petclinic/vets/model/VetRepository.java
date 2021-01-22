@@ -15,8 +15,7 @@
  */
 package org.springframework.samples.petclinic.vets.model;
 
-import com.microsoft.azure.spring.data.cosmosdb.repository.ReactiveCosmosRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -30,6 +29,5 @@ import org.springframework.stereotype.Repository;
  * @author Maciej Szarlinski
  */
 @Repository
-@RepositoryRestResource(collectionResourceRel = "vet", path = "vet")
-public interface VetRepository extends ReactiveCosmosRepository<Vet, Integer> {
+public interface VetRepository extends CosmosRepository<Vet, Integer> {
 }

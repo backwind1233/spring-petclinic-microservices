@@ -15,17 +15,25 @@
  */
 package org.springframework.samples.petclinic.customers.model;
 
-import com.microsoft.azure.spring.data.cosmosdb.core.mapping.Document;
-import com.microsoft.azure.spring.data.cosmosdb.core.mapping.PartitionKey;
+import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
+import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -36,31 +44,28 @@ import java.util.*;
  * @author Michael Isvy
  * @author Maciej Szarlinski
  */
-@Document(collection = "owners")
+@Container(containerName = "Owners")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Owner {
 
+    @Id
     private Integer id;
 
-    @NotEmpty
     private String firstName;
 
-    @NotEmpty
     @PartitionKey
     private String lastName;
 
-    @NotEmpty
     private String address;
 
-    @NotEmpty
     private String city;
 
-    @NotEmpty
-    @Digits(fraction = 0, integer = 10)
     private String telephone;
 
-    private Set<Integer> petIds;
+    private HashSet<Integer> petIds;
 
     public Integer getId() {
         return id;
@@ -106,22 +111,19 @@ public class Owner {
         this.telephone = telephone;
     }
 
-    protected Set<Integer> getPetsInternal() {
+    public HashSet<Integer> getPetIds() {
         if (this.petIds == null) {
             this.petIds = new HashSet<>();
         }
         return this.petIds;
     }
-
-    public List<Integer> getPets() {
-        final List<Integer> sortedPets = new ArrayList<>(getPetsInternal());
-        PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
-        return Collections.unmodifiableList(sortedPets);
+    public void setPetIds(HashSet<Integer> petIds) {
+        this.petIds = petIds;
     }
 
     public void addPet(Pet pet) {
 
-        getPetsInternal().add(pet.getId());
+        getPetIds().add(pet.getId());
         pet.setOwner(this);
     }
 

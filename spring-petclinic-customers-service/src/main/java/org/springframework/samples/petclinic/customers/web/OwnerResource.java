@@ -26,6 +26,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Juergen Hoeller
@@ -50,7 +53,7 @@ class OwnerResource {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Owner> createOwner(@Valid @RequestBody Owner owner) {
+    public Owner createOwner(@Valid @RequestBody Owner owner) {
         return ownerRepository.save(owner);
     }
 
@@ -60,7 +63,7 @@ class OwnerResource {
      * @return
      */
     @GetMapping(value = "/{ownerId}")
-    public Mono<Owner> findOwner(@PathVariable("ownerId") int ownerId) {
+    public Optional<Owner> findOwner(@PathVariable("ownerId") int ownerId) {
         return ownerRepository.findById(ownerId);
     }
 
@@ -68,8 +71,10 @@ class OwnerResource {
      * Read List of Owners
      */
     @GetMapping
-    public Flux<Owner> findAll() {
-        return ownerRepository.findAll();
+    public  List<Owner> findAll() {
+        List<Owner> list = new ArrayList<>();
+        ownerRepository.findAll().forEach(list::add);
+        return list;
     }
 
     /**
@@ -78,8 +83,8 @@ class OwnerResource {
     @PutMapping(value = "/{ownerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateOwner(@PathVariable("ownerId") int ownerId, @Valid @RequestBody Owner ownerRequest) {
-        Mono<Owner> ownerOptional = ownerRepository.findById(ownerId);
-        ownerOptional.blockOptional().ifPresent(owner -> {
+        Optional<Owner> ownerOptional = ownerRepository.findById(ownerId);
+        ownerOptional.ifPresent(owner -> {
             owner.setFirstName(ownerRequest.getFirstName());
             owner.setLastName(ownerRequest.getLastName());
             owner.setCity(ownerRequest.getCity());
