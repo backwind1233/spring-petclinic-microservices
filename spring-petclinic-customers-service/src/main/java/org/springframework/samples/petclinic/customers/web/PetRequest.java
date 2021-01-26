@@ -36,5 +36,5 @@ class PetRequest {
     @Size(min = 1)
     private String name;
 
-    private int typeId;
+    private String type;
 }

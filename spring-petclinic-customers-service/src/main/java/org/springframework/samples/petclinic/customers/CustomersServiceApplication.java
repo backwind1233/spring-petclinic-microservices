@@ -29,12 +29,6 @@ import org.springframework.samples.petclinic.customers.model.PetRepository;
 @SpringBootApplication
 public class CustomersServiceApplication {
 
-    @Autowired
-    private OwnerRepository ownerRepository;
-
-    @Autowired
-    private PetRepository petRepository;
-
     public static void main(String[] args) {
         SpringApplication.run(CustomersServiceApplication.class, args);
     }

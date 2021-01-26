@@ -31,9 +31,6 @@ import org.springframework.samples.petclinic.vets.system.VetsProperties;
 @EnableConfigurationProperties(VetsProperties.class)
 public class VetsServiceApplication {
 
-    @Autowired
-    private VetRepository vetRepository;
-
     public static void main(String[] args) {
         SpringApplication.run(VetsServiceApplication.class, args);
     }

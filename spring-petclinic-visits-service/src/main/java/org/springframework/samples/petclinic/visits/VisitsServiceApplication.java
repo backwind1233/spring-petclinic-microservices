@@ -29,9 +29,6 @@ import org.springframework.samples.petclinic.visits.model.VisitRepository;
 @SpringBootApplication
 public class VisitsServiceApplication {
 
-    @Autowired
-    private VisitRepository visitRepository;
-
     public static void main(String[] args) {
         SpringApplication.run(VisitsServiceApplication.class, args);
     }

@@ -43,12 +43,6 @@ class PetResource {
     private final PetRepository petRepository;
     private final OwnerRepository ownerRepository;
 
-
-//    @GetMapping("/petTypes")
-//    public List<PetType> getPetTypes() {
-//        return petRepository.findPetTypes();
-//    }
-
     @PostMapping("/owners/{ownerId}/pets")
     @ResponseStatus(HttpStatus.CREATED)
     public Pet processCreationForm(
@@ -78,9 +72,7 @@ class PetResource {
 
         pet.setName(petRequest.getName());
         pet.setBirthDate(petRequest.getBirthDate());
-
-//        petRepository.findPetTypeById(petRequest.getTypeId())
-//            .ifPresent(pet::setType);
+        pet.setType(petRequest.getType());
 
         log.info("Saving pet {}", pet);
         return petRepository.save(pet);
