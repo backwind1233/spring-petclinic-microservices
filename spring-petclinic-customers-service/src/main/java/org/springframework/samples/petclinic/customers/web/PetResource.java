@@ -26,6 +26,7 @@ import org.springframework.samples.petclinic.customers.model.PetRepository;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,11 +44,17 @@ class PetResource {
     private final PetRepository petRepository;
     private final OwnerRepository ownerRepository;
 
+    @GetMapping("/petTypes")
+    public List<String> getPetTypes() {
+        List<String> petTypes = petRepository.getPetTypes();
+        return petTypes;
+    }
+
     @PostMapping("/owners/{ownerId}/pets")
     @ResponseStatus(HttpStatus.CREATED)
     public Pet processCreationForm(
         @RequestBody PetRequest petRequest,
-        @PathVariable("ownerId") int ownerId) {
+        @PathVariable("ownerId") String ownerId) {
 
         final Pet pet = new Pet();
         Optional<Owner> optionalOwner = ownerRepository.findById(ownerId);
@@ -61,7 +68,7 @@ class PetResource {
     @PutMapping("/owners/*/pets/{petId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void processUpdateForm(@RequestBody PetRequest petRequest) {
-        int petId = petRequest.getId();
+        String petId = petRequest.getId();
         Optional<Pet> petOptional = findPetById(petId);
         petOptional.ifPresent(pet -> {
             save(pet, petRequest);
@@ -79,12 +86,11 @@ class PetResource {
     }
 
     @GetMapping("owners/*/pets/{petId}")
-    public PetDetails findPet(@PathVariable("petId") int petId) {
+    public PetDetails findPet(@PathVariable("petId") String petId) {
         return new PetDetails(findPetById(petId));
     }
 
-
-    private Optional<Pet> findPetById(int petId) {
+    private Optional<Pet> findPetById(String petId) {
         Optional<Pet> optionalPet = petRepository.findById(petId);
 
         if (!optionalPet.isPresent()) {

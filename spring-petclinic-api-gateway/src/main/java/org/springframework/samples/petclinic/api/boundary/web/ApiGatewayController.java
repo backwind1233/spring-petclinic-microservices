@@ -46,7 +46,7 @@ public class ApiGatewayController {
     private final ReactiveCircuitBreakerFactory cbFactory;
 
     @GetMapping(value = "owners/{ownerId}")
-    public Mono<OwnerDetails> getOwnerDetails(final @PathVariable int ownerId) {
+    public Mono<OwnerDetails> getOwnerDetails(final @PathVariable String ownerId) {
         return customersServiceClient.getOwner(ownerId)
             .flatMap(owner ->
                 visitsServiceClient.getVisitsForPets(owner.getPetIds())
@@ -64,7 +64,7 @@ public class ApiGatewayController {
             owner.getPets()
                 .forEach(pet -> pet.getVisits()
                     .addAll(visits.getItems().stream()
-                        .filter(v -> v.getPetId() == pet.getId())
+                        .filter(v -> v.getPetId().equals(pet.getId()))
                         .collect(Collectors.toList()))
                 );
             return owner;

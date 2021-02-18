@@ -16,9 +16,11 @@
 package org.springframework.samples.petclinic.customers.model;
 
 import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.core.style.ToStringCreator;
+import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 
@@ -35,22 +37,25 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pet {
-    private Integer id;
+
+    @Id
+    @GeneratedValue
+    private String id;
 
     private String name;
 
     private Date birthDate;
 
-    private String pettype;
+    private String petType;
 
-    @JsonIgnore
-    private Owner owner;
+//    @JsonIgnore
+//    private Owner owner;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(final Integer id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -71,20 +76,20 @@ public class Pet {
     }
 
     public String getType() {
-        return pettype;
+        return petType;
     }
 
     public void setType(final String type) {
-        this.pettype = type;
+        this.petType = type;
     }
 
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(final Owner owner) {
-        this.owner = owner;
-    }
+//    public Owner getOwner() {
+//        return owner;
+//    }
+//
+//    public void setOwner(final Owner owner) {
+//        this.owner = owner;
+//    }
 
     @Override
     public String toString() {
@@ -94,8 +99,8 @@ public class Pet {
             .append("birthDate", this.getBirthDate())
             .append("type", this.getType()
             )
-            .append("ownerFirstname", this.getOwner().getFirstName())
-            .append("ownerLastname", this.getOwner().getLastName())
+//            .append("ownerFirstname", this.getOwner().getFirstName())
+//            .append("ownerLastname", this.getOwner().getLastName())
             .toString();
     }
 

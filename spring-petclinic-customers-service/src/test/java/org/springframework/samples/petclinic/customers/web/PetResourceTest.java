@@ -49,7 +49,7 @@ class PetResourceTest {
 
         Pet pet = setupPet();
 
-        given(petRepository.findById(2)).willReturn(Optional.of(pet));
+        given(petRepository.findById("2")).willReturn(Optional.of(pet));
 
 
         mvc.perform(get("/owners/2/pets/2").accept(MediaType.APPLICATION_JSON))
@@ -68,7 +68,7 @@ class PetResourceTest {
 
         pet.setName("Basil");
 
-        pet.setId(2);
+        pet.setId("2");
 
         pet.setType("dog");
 

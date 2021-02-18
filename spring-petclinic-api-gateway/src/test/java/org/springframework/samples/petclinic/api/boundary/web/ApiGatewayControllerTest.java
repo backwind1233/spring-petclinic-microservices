@@ -40,16 +40,16 @@ class ApiGatewayControllerTest {
     void getOwnerDetails_withAvailableVisitsService() {
         OwnerDetails owner = new OwnerDetails();
         PetDetails cat = new PetDetails();
-        cat.setId(20);
+        cat.setId("20");
         cat.setName("Garfield");
         owner.getPets().add(cat);
         Mockito
-            .when(customersServiceClient.getOwner(1))
+            .when(customersServiceClient.getOwner("1"))
             .thenReturn(Mono.just(owner));
 
         Visits visits = new Visits();
         VisitDetails visit = new VisitDetails();
-        visit.setId(300);
+        visit.setId("300");
         visit.setDescription("First visit");
         visit.setPetId(cat.getId());
         visits.getItems().add(visit);
@@ -76,11 +76,11 @@ class ApiGatewayControllerTest {
     void getOwnerDetails_withServiceError() {
         OwnerDetails owner = new OwnerDetails();
         PetDetails cat = new PetDetails();
-        cat.setId(20);
+        cat.setId("20");
         cat.setName("Garfield");
         owner.getPets().add(cat);
         Mockito
-            .when(customersServiceClient.getOwner(1))
+            .when(customersServiceClient.getOwner("1"))
             .thenReturn(Mono.just(owner));
 
         Mockito

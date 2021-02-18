@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.customers.model;
 
 import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,7 +45,7 @@ import java.util.Set;
  * @author Michael Isvy
  * @author Maciej Szarlinski
  */
-@Container(containerName = "Owners")
+@Container(containerName = "owners")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -52,7 +53,8 @@ import java.util.Set;
 public class Owner {
 
     @Id
-    private Integer id;
+    @GeneratedValue
+    private String id;
 
     private String firstName;
 
@@ -65,9 +67,9 @@ public class Owner {
 
     private String telephone;
 
-    private HashSet<Integer> petIds;
+    private Set<Pet> pets;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -111,27 +113,27 @@ public class Owner {
         this.telephone = telephone;
     }
 
-    public HashSet<Integer> getPetIds() {
-        if (this.petIds == null) {
-            this.petIds = new HashSet<>();
+    protected Set<Pet> getPetsInternal() {
+        if (this.pets == null) {
+            this.pets = new HashSet<>();
         }
-        return this.petIds;
+        return this.pets;
     }
-    public void setPetIds(HashSet<Integer> petIds) {
-        this.petIds = petIds;
+
+    public List<Pet> getPets() {
+        final List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
+        PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
+        return Collections.unmodifiableList(sortedPets);
     }
 
     public void addPet(Pet pet) {
-
-        getPetIds().add(pet.getId());
-        pet.setOwner(this);
+        getPetsInternal().add(pet);
     }
 
     @Override
     public String toString() {
         return new ToStringCreator(this)
-
-            .append("id", this.getId())
+         .append("id", this.getId())
             .append("lastName", this.getLastName())
             .append("firstName", this.getFirstName())
             .append("address", this.address)

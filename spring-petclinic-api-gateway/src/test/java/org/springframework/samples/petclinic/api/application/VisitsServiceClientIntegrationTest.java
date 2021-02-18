@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class VisitsServiceClientIntegrationTest {
 
-    private static final Integer PET_ID = 1;
+    private static final String PET_ID = "1";
 
     private VisitsServiceClient visitsServiceClient;
 
@@ -28,7 +28,7 @@ class VisitsServiceClientIntegrationTest {
     void setUp() {
         server = new MockWebServer();
         visitsServiceClient = new VisitsServiceClient(WebClient.builder());
-        visitsServiceClient.setHostname(server.url("/").toString());
+   //     visitsServiceClient.setHostname(server.url("/").toString());
     }
 
     @AfterEach
@@ -42,13 +42,13 @@ class VisitsServiceClientIntegrationTest {
             .setHeader("Content-Type", "application/json")
             .setBody("{\"items\":[{\"id\":5,\"date\":\"2018-11-15\",\"description\":\"test visit\",\"petId\":1}]}"));
 
-        Mono<Visits> visits = visitsServiceClient.getVisitsForPets(Collections.singletonList(1));
+        Mono<Visits> visits = visitsServiceClient.getVisitsForPets(Collections.singletonList("1"));
 
         assertVisitDescriptionEquals(visits.block(), PET_ID,"test visit");
     }
 
 
-    private void assertVisitDescriptionEquals(Visits visits, int petId, String description) {
+    private void assertVisitDescriptionEquals(Visits visits, String petId, String description) {
         assertEquals(1, visits.getItems().size());
         assertNotNull(visits.getItems().get(0));
         assertEquals(petId, visits.getItems().get(0).getPetId());

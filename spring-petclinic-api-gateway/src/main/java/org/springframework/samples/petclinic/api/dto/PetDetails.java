@@ -26,13 +26,13 @@ import java.util.List;
 @Data
 public class PetDetails {
 
-    private int id;
+    private String id;
 
     private String name;
 
     private String birthDate;
 
-    private PetType type;
+    private String type;
 
     private final List<VisitDetails> visits = new ArrayList<>();
 

@@ -27,7 +27,7 @@ import javax.persistence.Id;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-public class Specialty {
+public class    Specialty {
     @Id
     private Integer id;
 

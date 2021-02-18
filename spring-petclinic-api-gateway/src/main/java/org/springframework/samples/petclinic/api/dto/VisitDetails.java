@@ -25,9 +25,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VisitDetails {
 
-    private Integer id = null;
+    private String id = null;
 
-    private Integer petId = null;
+    private String petId = null;
 
     private String date = null;
 

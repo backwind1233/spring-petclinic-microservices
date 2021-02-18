@@ -30,10 +30,10 @@ public class PopulateSeedData {
     @PostConstruct
     // @Order(2) // not evaluated by Spring
     public void populateSeedData() throws ParseException {
-        final Visit visit1 = new Visit(1, 7, new SimpleDateFormat("yyyy-dd-mm").parse("2010-03-04"), "rabies shot");
-        final Visit visit2 = new Visit(2, 8, new SimpleDateFormat("yyyy-dd-mm").parse("2011-03-04"), "rabies shot");
-        final Visit visit3 = new Visit(3, 8, new SimpleDateFormat("yyyy-dd-mm").parse("2009-06-04"), "neutered");
-        final Visit visit4 = new Visit(4, 7, new SimpleDateFormat("yyyy-dd-mm").parse("2008-09-04"), "spayed");
+        final Visit visit1 = new Visit("1", "7", new SimpleDateFormat("yyyy-dd-MM").parse("2010-03-04"), "rabies shot");
+        final Visit visit2 = new Visit("2", "8", new SimpleDateFormat("yyyy-dd-MM").parse("2011-03-04"), "rabies shot");
+        final Visit visit3 = new Visit("3", "8", new SimpleDateFormat("yyyy-dd-MM").parse("2009-06-04"), "neutered");
+        final Visit visit4 = new Visit("4", "7", new SimpleDateFormat("yyyy-dd-MM").parse("2008-09-04"), "spayed");
 
         this.visitRepository.saveAll(Lists.newArrayList(visit1, visit2, visit3, visit4));
     }

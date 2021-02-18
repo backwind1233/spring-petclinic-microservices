@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.samples.petclinic.customers.model.Owner;
 import org.springframework.samples.petclinic.customers.model.OwnerRepository;
+import org.springframework.samples.petclinic.customers.model.Pet;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,6 +55,7 @@ class OwnerResource {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Owner createOwner(@Valid @RequestBody Owner owner) {
+        //owner.setId((int) Math.random());
         return ownerRepository.save(owner);
     }
 
@@ -63,8 +65,8 @@ class OwnerResource {
      * @return
      */
     @GetMapping(value = "/{ownerId}")
-    public Optional<Owner> findOwner(@PathVariable("ownerId") int ownerId) {
-        return ownerRepository.findById(ownerId);
+    public Optional<Owner> findOwner(@PathVariable("ownerId") String ownerId) {
+            return ownerRepository.findById(ownerId);
     }
 
     /**
@@ -78,11 +80,24 @@ class OwnerResource {
     }
 
     /**
+     * Read List of Owners
+     */
+    @GetMapping(value = "/{ownerId}/pets")
+    public  List<Pet> findAllPets(@PathVariable("ownerId") String ownerId) {
+        Optional<Owner> optionalOwner = ownerRepository.findById(ownerId);
+        List<Pet> list = new ArrayList<>();
+        if(optionalOwner.isPresent()) {
+           list = optionalOwner.get().getPets();
+        }
+        return list;
+    }
+
+    /**
      * Update Owner
      */
     @PutMapping(value = "/{ownerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateOwner(@PathVariable("ownerId") int ownerId, @Valid @RequestBody Owner ownerRequest) {
+    public void updateOwner(@PathVariable("ownerId") String ownerId, @Valid @RequestBody Owner ownerRequest) {
         Optional<Owner> ownerOptional = ownerRepository.findById(ownerId);
         ownerOptional.ifPresent(owner -> {
             owner.setFirstName(ownerRequest.getFirstName());

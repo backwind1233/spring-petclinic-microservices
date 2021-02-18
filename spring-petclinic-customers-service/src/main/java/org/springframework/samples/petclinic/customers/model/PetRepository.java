@@ -15,7 +15,10 @@
  */
 package org.springframework.samples.petclinic.customers.model;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
+import com.azure.spring.data.cosmos.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Repository class for <code>Pet</code> domain objects All method names are compliant with Spring Data naming
@@ -28,7 +31,8 @@ import org.springframework.stereotype.Repository;
  * @author Maciej Szarlinski
  */
 @Repository
-public interface PetRepository extends CosmosRepository<Pet, Integer> {
-
+public interface PetRepository extends CosmosRepository<Pet, String> {
+    @Query(value = "select DISTINCT VALUE p.type from  Pet p")
+    List<String> getPetTypes();
 }
 

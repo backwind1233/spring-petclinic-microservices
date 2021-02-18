@@ -16,14 +16,15 @@
 package org.springframework.samples.petclinic.visits.model;
 
 import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -41,10 +42,10 @@ import java.util.Date;
 public class Visit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue
+    private String id;
 
-    private int petId;
+    private String petId;
 
     @Builder.Default
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -54,11 +55,11 @@ public class Visit {
     private String description;
 
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -70,11 +71,11 @@ public class Visit {
         return description;
     }
 
-    public int getPetId() {
+    public String getPetId() {
         return petId;
     }
 
-    public void setPetId(final int petId) {
+    public void setPetId(final String petId) {
         this.petId = petId;
     }
 

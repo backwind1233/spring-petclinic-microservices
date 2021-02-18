@@ -29,11 +29,11 @@ import java.util.Optional;
 @Data
 class PetDetails {
 
-    private long id;
+    private String id;
 
     private String name;
 
-    private String owner;
+//    private String owner;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
@@ -44,7 +44,7 @@ class PetDetails {
         petInfo.ifPresent(pet -> {
             this.id = pet.getId();
             this.name = pet.getName();
-            this.owner = pet.getOwner().getFirstName() + " " + pet.getOwner().getLastName();
+    //        this.owner = pet.getOwner().getFirstName() + " " + pet.getOwner().getLastName();
             this.birthDate = pet.getBirthDate();
             this.type = pet.getType();
         });

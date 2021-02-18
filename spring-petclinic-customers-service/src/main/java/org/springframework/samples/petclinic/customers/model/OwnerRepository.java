@@ -29,5 +29,5 @@ import org.springframework.stereotype.Repository;
  * @author Maciej Szarlinski
  */
 @Repository
-public interface OwnerRepository extends CosmosRepository<Owner, Integer> {
+public interface OwnerRepository extends CosmosRepository<Owner, String> {
 }
