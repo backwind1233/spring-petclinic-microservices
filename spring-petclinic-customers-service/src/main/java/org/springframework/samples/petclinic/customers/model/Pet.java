@@ -22,6 +22,7 @@ import lombok.*;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -36,7 +37,7 @@ import java.util.Date;
 @Builder(builderMethodName = "pet")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pet {
+public class Pet implements Serializable {
 
     @Id
     @GeneratedValue

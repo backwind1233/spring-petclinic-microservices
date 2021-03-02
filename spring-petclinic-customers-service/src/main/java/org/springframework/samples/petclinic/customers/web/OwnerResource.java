@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.customers.web;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.samples.petclinic.customers.model.Owner;
 import org.springframework.samples.petclinic.customers.model.OwnerRepository;
@@ -55,7 +57,6 @@ class OwnerResource {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Owner createOwner(@Valid @RequestBody Owner owner) {
-        //owner.setId((int) Math.random());
         return ownerRepository.save(owner);
     }
 
@@ -73,10 +74,20 @@ class OwnerResource {
      * Read List of Owners
      */
     @GetMapping
+    @Cacheable("owners")
     public  List<Owner> findAll() {
         List<Owner> list = new ArrayList<>();
         ownerRepository.findAll().forEach(list::add);
         return list;
+    }
+
+    /**
+     * Clears the cache for all Owners
+     */
+    @GetMapping(value = "/clearcache")
+    @CacheEvict("owners")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void clearAllCache() {
     }
 
     /**

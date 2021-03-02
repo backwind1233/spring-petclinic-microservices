@@ -61,19 +61,19 @@ spring:
     gateway:
       routes:
         - id: vets-service
-          uri: http://localhost:8082
+          uri: http://localhost:8083
           predicates:
             - Path=/api/vet/**
           filters:
             - StripPrefix=2
         - id: visits-service
-          uri: http://localhost:8083
+          uri: http://localhost:8082
           predicates:
             - Path=/api/visit/**
           filters:
             - StripPrefix=2
         - id: customers-service
-          uri: http://localhost:8089
+          uri: http://localhost:8081
           predicates:
             - Path=/api/customer/**
           filters:

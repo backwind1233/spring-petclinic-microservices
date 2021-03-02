@@ -20,5 +20,11 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
+  zipkin:
+    baseUrl: http://localhost:9411
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 server:
-  port: 8082
+  port: 8083
