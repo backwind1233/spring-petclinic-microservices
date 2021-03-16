@@ -30,15 +30,12 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CustomersServiceClient {
 
-    @Value("${server.port}")
-    private String port ;
-
     private final WebClient.Builder webClientBuilder;
 
     public Mono<OwnerDetails> getOwner(final String ownerId) {
-        return WebClient.create()
-            .get()
-            .uri( "http://127.0.0.1:"+port+"/api/customer/owners/{ownerId}", ownerId)
+        return webClientBuilder.build().get()
+            .uri("http://customers-service/owners/{ownerId}", ownerId)
             .retrieve()
             .bodyToMono(OwnerDetails.class);
-    }}
+    }
+}

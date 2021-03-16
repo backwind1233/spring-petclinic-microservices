@@ -33,21 +33,23 @@ import static java.util.stream.Collectors.joining;
 @RequiredArgsConstructor
 public class VisitsServiceClient {
 
-    @Value("${server.port}")
-    private String port ;
-    //private String hostname = "http://visits-service/";
+    private String hostname = "http://visits-service/";
 
     private final WebClient.Builder webClientBuilder;
 
     public Mono<Visits> getVisitsForPets(final List<String> petIds) {
-        return WebClient.create()
+        return webClientBuilder.build()
             .get()
-            .uri( "http://127.0.0.1:"+ port + "/api/vist/pets/visits?petId={petId}", joinIds(petIds))
+            .uri(hostname + "pets/visits?petId={petId}", joinIds(petIds))
             .retrieve()
             .bodyToMono(Visits.class);
     }
 
     private String joinIds(List<String> petIds) {
         return petIds.stream().map(Object::toString).collect(joining(","));
+    }
+
+    void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 }
