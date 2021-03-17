@@ -27,6 +27,9 @@ import org.springframework.samples.petclinic.customers.model.Pet;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+// Required for AAD starter to work. For sample only
+//import org.springframework.security.access.prepost.PreAuthorize;
+
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -40,6 +43,8 @@ import java.util.Optional;
  * @author Michael Isvy
  * @author Maciej Szarlinski
  */
+
+//@PreAuthorize("hasRole('ROLE_owners')")  // For AAD sample
 @RequestMapping("/owners")
 @RestController
 @Timed("petclinic.owner")

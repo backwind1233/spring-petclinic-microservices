@@ -128,6 +128,10 @@ You can then access petclinic here: http://localhost:8080/
 The application could be reached at http://localhost:8080
 ![](./media/petclinic.jpg)
 
+## Enabling Spring boot starter for Azure Active directory (Optional)
+To secure the Java applications in this sample please follow the [Spring Security Azure Active Directory tutorial](https://docs.microsoft.com/en-us/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory).
+After setting your Active directory you can enable security on Customers service  by uncommenting the relevant AAD sample code. 
+ 
 ## Next Steps
 
 In this quickstart, you've deployed an existing Spring microservices app using Azure CLI. To learn more about Spring on Azure, go to:
