@@ -43,8 +43,8 @@ import java.util.Optional;
  * @author Michael Isvy
  * @author Maciej Szarlinski
  */
-
-//@PreAuthorize("hasRole('ROLE_owners')")  // For AAD sample
+// For AAD sample
+//@PreAuthorize("hasRole('ROLE_owners')")
 @RequestMapping("/owners")
 @RestController
 @Timed("petclinic.owner")
