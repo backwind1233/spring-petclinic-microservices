@@ -70,8 +70,6 @@ Login to the Azure CLI and choose your active subscription. Be sure to choose th
 
 ### Prepare your environment for deployments
 
-Install [jq](https://github.com/stedolan/jq/wiki/Installation)   
-
 Create a bash script with environment variables by making a copy of the supplied template:
 ```bash
     cp .scripts/setup-env-variables-azure-template.sh .scripts/setup-env-variables-azure.sh
