@@ -81,20 +81,13 @@ Open `.scripts/setup-env-variables-azure.sh` and enter the following information
 
 ```bash
 
-    export SUBSCRIPTION=subscription-id # customize this
-...
-    export RESOURCE_GROUP=resource-group-name # customize this
-...
-    export RESOURCE_GROUP=resource-group-name # customize this
-...
-    export LOCATION=SouthCentralUS  #customize this
-...
-    export COSMOSDB_NAME=mycosmosdbaccname  # customize this
-...
-    export REDIS_NAME=myredisname #customize this
-...
-    export KEYVAULT_NAME=myend2endkv #customize this
-...
+export SUBSCRIPTION=subscription-id # customize this
+export RESOURCE_GROUP=resource-group-name # customize this
+export LOCATION=SouthCentralUS  #customize this
+export COSMOSDB_NAME=mycosmosdbaccname  # customize this
+export REDIS_NAME=myredisname #customize this
+export KEYVAULT_NAME=myend2endkv #customize this
+export APP_NAME_FOR_KEYVAULT=myappforkeyvault #customize this
     
 ```
 
@@ -102,6 +95,7 @@ Then, set the environment:
 ```bash
     source .scripts/setup-env-variables-azure.sh
 ```
+
 make sure keyvault.env file is created at the root of the repo.
 
 ## Starting services locally with docker-compose
