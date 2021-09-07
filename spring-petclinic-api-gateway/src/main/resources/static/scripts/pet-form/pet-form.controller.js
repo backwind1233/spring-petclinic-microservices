@@ -15,14 +15,14 @@ angular.module('petForm')
                 $http.get("api/customer/owners/" + ownerId + "/pets/" + petId).then(function (resp) {
                     self.pet = resp.data;
                     self.pet.birthDate = new Date(self.pet.birthDate);
-                    self.petTypeId = "" + self.pet.type.id;
+                    self.petType = "" + self.pet.type;
                 });
             } else {
                 $http.get('api/customer/owners/' + ownerId).then(function (resp) {
                     self.pet = {
                         owner: resp.data.firstName + " " + resp.data.lastName
                     };
-                    self.petTypeId = "1";
+                    self.petType = "";
                 })
 
             }
@@ -35,7 +35,7 @@ angular.module('petForm')
                 id: id,
                 name: self.pet.name,
                 birthDate: self.pet.birthDate,
-                typeId: self.petTypeId
+                type: self.petType
             };
 
             var req;
